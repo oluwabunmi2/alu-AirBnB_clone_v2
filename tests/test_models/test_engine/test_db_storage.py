@@ -25,10 +25,10 @@ class TestDBStorage(unittest.TestCase):
 
     def test_user(self):
         """ Tests user """
-        user = User(name="Abissa")
+        user = User(name="Oluwabunmi")
         user.save()
         self.assertTrue(user.id in self.storage.all())
-        self.assertEqual(user.name, "Abissa")
+        self.assertEqual(user.name, "Oluwabunmi")
 
     def test_city(self):
         """ test user """
