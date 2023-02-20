@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-""" State Module for HBNB project """
+
+"""db_storage.py use database"""
+
+import os
+
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
@@ -9,21 +13,19 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-import os
+
 
 class DBStorage:
-    """Represents database storage"""
+    """represents database storage"""
     __engine = None
     __session = None
 
     """
-    To set the environment variables, depending on your operating system:
-    export MY_VARIABLE=<MY_VARIABLE_VALUE>  (Linux)
-    set MY_VARIABLE=<MY_VARIABLE_VALUE>  (Windows)
+    set env variables depending on your OS
     """
 
     def __init__(self):
-        """Initialize object"""
+        """initialize object"""
         user = os.getenv('HBNB_MYSQL_USER')
         password = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST')
@@ -41,14 +43,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Gets all objects depending on the class name"""
-        # from models.base_model import BaseModel
-        # from models.user import User
-        # from models.place import Place
-        # from models.state import State
-        # from models.city import City
-        # from models.amenity import Amenity
-        # from models.review import Review
+        """gets all objects depending on the class name"""
 
         classes = {
             'User': User, 'Place': Place,
@@ -72,15 +67,15 @@ class DBStorage:
         return obj_dict
 
     def new(self, obj):
-        """Adds the object to the current database session"""
+        """adds the object to the current session"""
         self.__session.add(obj)
 
     def save(self):
-        """Commits all changes of the current database session"""
+        """commits all changes of the current session"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """Deletes from the current database session obj if not None"""
+        """deletes from the current session obj if not None"""
         if obj is not None:
             self.__session.delete(obj)
 
