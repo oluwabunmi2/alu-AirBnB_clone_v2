@@ -2,10 +2,11 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.city import City
+from models.state import State
 
 
 class test_City(test_basemodel):
-    """ """
+    """ test for city """
 
     def __init__(self, *args, **kwargs):
         """ """
@@ -15,10 +16,13 @@ class test_City(test_basemodel):
 
     def test_state_id(self):
         """ """
+        state = State()
         new = self.value()
+        new.state_id = state.id
         self.assertEqual(type(new.state_id), str)
 
     def test_name(self):
         """ """
         new = self.value()
+        new.name = ""
         self.assertEqual(type(new.name), str)

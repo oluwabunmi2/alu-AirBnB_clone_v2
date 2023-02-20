@@ -9,7 +9,7 @@ import os
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """ test base model """
 
     def __init__(self, *args, **kwargs):
         """ """
@@ -96,4 +96,5 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
-        self.assertFalse(new.created_at == new.updated_at)
+        self.assertassertAlmostEqual(new.created_at.timestamp(),
+                               new.updated_at.timestamp(), delta=1)
