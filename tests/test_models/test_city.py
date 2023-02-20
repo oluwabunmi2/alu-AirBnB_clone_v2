@@ -24,5 +24,5 @@ class test_City(test_basemodel):
     def test_name(self):
         """ """
         new = self.value()
-        new.name = ""
+        new.name = "Maradi"
         self.assertEqual(type(new.name), str)
