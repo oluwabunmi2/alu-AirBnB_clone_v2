@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] == '{' and pline[-1] == '}' \
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,53 +115,60 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        print(args)
+        # getting the arguments in place
+        items = args.split(" ")
+        print(items)
+        # get first argument
+        class_args = str(items[0])
+        param_list = []
+        dict_list = {}
+
+        for temp_one in items:
+            if '=' in temp_one:
+                param_list.append(temp_one)
+
+        # divid temp list
+        temp_one_list = []
+        for temp_one in param_list:
+
+            holder_list = temp_one.split('=')
+            # check for string
+            if '\"' in temp_one:
+                holder_list[1] = str(holder_list[1].replace('\"', ''))
+                if '_' in holder_list[1]:
+                    holder_list[1].replace('_','')
+
+            elif '.' in holder_list[1]:
+                # check for float
+                holder_list[1] = float(holder_list[1])
+                # check for int
+            elif '.' not in temp_one \
+                    and '_' not in holder_list[1] \
+                    and '\"' not in holder_list[1]:
+                holder_list[1] = int(holder_list[1])
+
+            temp_one_list.append(holder_list)
+
+        print(temp_one_list)
+
+
         if not args:
             print("** class name missing **")
             return
-
-        commands = args[:]
-        commands = commands.partition(' ')
-        classes = commands[0]
-        if classes not in HBNBCommand.classes:
+        elif class_args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        new_instance = HBNBCommand.classes[class_args]()
 
-        new_instance = HBNBCommand.classes[classes]()
-        commands = commands[2]
-        new_dict = {}
-        while len(commands) != 0:
-            commands = commands.partition(" ")
-            parameter = commands[0].partition("=")
-            key = parameter[0]
-            value = parameter[2]
-            if value.isdecimal():
-                value = int(value)
-            else:
-                try:
-                    value = float(value)
-                except:
-                    if value[0] is '\"' and value[-1] is '\"':
-                        valid = 1
-                        value = value[1:-1]
-                        value = value.replace('_', ' ')
-                        index = value.find('\"', 1)
-                        for i in range(len(value)):
-                            if (i == 0 and value[i] == '"'):
-                                valid = 0
-                            if (value[i] == '"'):
-                                if (value[i - 1] != '\\'):
-                                    valid = 0
-                        if (valid == 0):
-                            commands = commands[2]
-                            continue
-                    else:
-                        commands = commands[2]
-                        continue
-            new_dict[key] = value
-            commands = commands[2]
-        new_instance.__dict__.update(new_dict)
-        new_instance.save()
+        # set the attirbutes to the instance
+        for temp_one in temp_one_list:
+            setattr(new_instance, temp_one[0], temp_one[1])
+
+        storage.save()
         print(new_instance.id)
+        storage.save()
+
 
     def help_create(self):
         """ Help information for the create method """
@@ -243,18 +250,14 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all(HBNBCommand.classes[args]).items():
-                print_list.append(str(v))
+            for k, v in storage._FileStorage__objects.items():
+                if k.split('.')[0] == args:
+                    print_list.append(str(v))
         else:
-            for k, v in storage.all().items():
+            for k, v in storage._FileStorage__objects.items():
                 print_list.append(str(v))
-        print("[", end="")
-        for i in range(len(print_list)):
-            if (i == len(print_list) - 1):
-                print(print_list[i], end="")
-            else:
-                print(print_list[i], end=", ")
-        print("]")
+
+        print(print_list)
 
     def help_all(self):
         """ Help information for the all command """
@@ -313,7 +316,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] is '\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -321,10 +324,10 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0] is not ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
-            if args[2] and args[2][0] is '\"':
+            if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
 
             # if att_val was not quoted arg
@@ -360,6 +363,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
