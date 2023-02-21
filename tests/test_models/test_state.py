@@ -4,8 +4,8 @@ from tests.test_models.test_base_model import Test_basemodel
 from models.state import State
 
 
-class test_state(test_basemodel):
-    """ test for state """
+classnTestState(TestBaseModel):
+    """ Test for state """
 
     def __init__(self, *args, **kwargs):
         """ """
