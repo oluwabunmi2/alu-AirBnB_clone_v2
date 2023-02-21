@@ -6,8 +6,7 @@ from models import storage
 import os
 
 
-@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "skip if not db")
-class TestFileStorage(unittest.TestCase):
+class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
     def setUp(self):
@@ -102,12 +101,12 @@ class TestFileStorage(unittest.TestCase):
         """ Key is properly formatted """
         new = BaseModel()
         _id = new.to_dict()['id']
-        for key in self.storage.all().keys():
+        for key in storage.all().keys():
             temp = key
             self.assertEqual(temp, 'BaseModel' + '.' + _id)
 
     def test_storage_var_created(self):
         """ FileStorage object storage created """
         from models.engine.file_storage import FileStorage
-        print(type(self.storage))
+        #print(type(self.storage))
         self.assertEqual(type(self.storage), FileStorage)
