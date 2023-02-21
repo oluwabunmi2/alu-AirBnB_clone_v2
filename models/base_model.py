@@ -7,16 +7,16 @@ from sqlalchemy import Column, String, DateTime
 
 Base = declarative_base()
 
-
 class BaseModel:
     """A base class for all hbnb models"""
-    # used for db storage
+
+     # used for db storage
     id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
-        """Instantiates a new model"""
+        """Instatntiates a new model"""
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
@@ -58,14 +58,8 @@ class BaseModel:
         storage.new(self)
         storage.save()
 
-    def delete(self):
-        """Deletes the current instance from the storage"""
-        from models import storage
-        storage.delete(self)
-
     def to_dict(self):
         """Convert instance into dict format"""
-
         dictionary = {}
         dictionary.update(self.__dict__)
         for key in self.__dict__.keys():
@@ -77,3 +71,8 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
 
         return dictionary
+
+    def delete(self):
+        """Deletes the current instance from the storage"""
+        from models import storage
+        storage.delete(self)
