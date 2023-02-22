@@ -5,6 +5,7 @@ from models.review import Review
 from models.place import Place
 from models.user import User
 
+
 class TestReview(TestBaseModel):
     """Test for review """
 
@@ -16,15 +17,15 @@ class TestReview(TestBaseModel):
 
     def test_place_id(self):
         """ """
-        new = self.value()
         place = Place()
+        new = self.value()
         new.place_id = place.id
         self.assertEqual(type(new.place_id), str)
 
     def test_user_id(self):
         """ """
-        new = self.value()
         user = User()
+        new = self.value()
         new.user_id = user.id
         self.assertEqual(type(new.user_id), str)
 
