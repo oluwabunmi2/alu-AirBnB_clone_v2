@@ -2,7 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-import models
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -12,11 +12,10 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
-       # determines prompt for interactive/non-interactive modes
+    # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
@@ -363,5 +362,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
-
