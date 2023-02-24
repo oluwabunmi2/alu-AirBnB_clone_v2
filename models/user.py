@@ -16,3 +16,4 @@ class User(BaseModel, Base):
     reviews = relationship("Review", backref='user')
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
+        
