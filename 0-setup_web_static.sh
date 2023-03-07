@@ -8,7 +8,7 @@ echo "<html>
   <head>
   </head>
   <body>
-    Best School
+     Holberton School
   </body>
 </html>" > /data/web_static/releases/test/index.html
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
