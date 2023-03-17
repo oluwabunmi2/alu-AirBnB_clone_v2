@@ -1,25 +1,29 @@
 #!/usr/bin/python3
-""" Flask web application """
+""" Starts a Flask web application """
 
-
+from flask import Flask, render_template
 from models import storage
 from models.state import State
-from flask import Flask
-from flask import render_template
+# from models.engine.db_storage import close
 
 app = Flask(__name__)
 
 
 @app.route('/states_list', strict_slashes=False)
-def states():
-    """Comment"""
-    return render_template('7-states_list.html',
-                           states=storage.all('State').values())
+def states_list():
+    """ Displays a HTML page with a list of states """
+    """ states = storage.all('State').values()"""
+    states = sorted(list(storage.all(State).values()),
+                    key=lambda state: state.name)
+    # print(states)
+    return render_template('7-states_list.html', states=states)
+
+# Close the session after each request
 
 
 @app.teardown_appcontext
-def teardown(self):
-    """Remove SQLAlchemy Session"""
+def close_session(exception):
+    """ Closes the session after each request """
     storage.close()
 
 
