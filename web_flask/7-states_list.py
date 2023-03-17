@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-""" start flask application """
 
+"""Starts a Flask web application"""
 
 from models import storage
 from models.state import State
@@ -19,7 +19,7 @@ def states():
 
 @app.teardown_appcontext
 def teardown(self):
-    """Remove SQLAlchemy Session"""
+    """Remove the current SQLAlchemy Session"""
     storage.close()
 
 
