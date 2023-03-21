@@ -85,10 +85,13 @@ def return_page_even(num=None):
         return render_template("6-number_odd_or_even.html", value=data)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)#!/usr/bin/python3
+    app.run(host='0.0.0.0', debug=True)  
+#!/usr/bin/python3
 """
 Starts a server
 """
+
+
 from flask import Flask, render_template
 from models import storage
 from models.state import State
