@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""Starts a Flask web application"""
+"""Start web application"""
 
 from models import storage
 from models.state import State
@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route('/states', strict_slashes=False)
 def state_list():
-    """Comment"""
+    """function for list"""
     states = storage.all('State').values()
     return render_template(
         "9-states.html",
@@ -22,7 +22,7 @@ def state_list():
 
 @app.route('/states/<id>', strict_slashes=False)
 def states_by_id(id):
-    """Comment"""
+    """function for id"""
     all_states = storage.all('State')
     key = "State.{}".format(id)
     try:
@@ -37,9 +37,9 @@ def states_by_id(id):
 
 @app.teardown_appcontext
 def teardown(self):
-    """Removes the current SQLAlchemy Session"""
+    """Removes SQLAlchemy Session"""
     storage.close()
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',5000)
